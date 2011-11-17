@@ -3,3 +3,9 @@ sensor_output
 *.a
 *.o
 .dep
+*.bin
+*.eep
+*.elf
+*.hex
+*.lss
+*.map
