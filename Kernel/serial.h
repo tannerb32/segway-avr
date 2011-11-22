@@ -12,12 +12,12 @@
 #endif
 
 void initUSART0(void);
-void transmitStringUSART0(char const * msg);
+void transmitStringUSART0(char const *msg);
 void transmitBufferUSART0(uint8_t const buffer[], uint8_t buffer_length);
 void transmitIntegerUSART0(int value, int radix);
 
-int USART0EnQueue( uint8_t data );
-int USART0DeQueue( );
+int USART0EnQueue(uint8_t data);
+int USART0DeQueue();
 #endif
 
 #ifdef USE_USART1
@@ -28,11 +28,11 @@ int USART0DeQueue( );
 
 void initUSART1(void);
 void transmitBufferUSART1(uint8_t const buffer[], uint8_t buffer_length);
-void transmitStringUSART1(char const * msg);
+void transmitStringUSART1(char const *msg);
 void transmitIntegerUSART1(int value, int radix);
 
-int USART1EnQueue( uint8_t data );
-int USART1DeQueue( );
+int USART1EnQueue(uint8_t data);
+int USART1DeQueue();
 #endif
 
 #endif /* SERIAL_H_ */

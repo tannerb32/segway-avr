@@ -11,7 +11,7 @@ TARGET	= $(PROJECT).elf
 ## Select the type of robot to use
 
 # Definitions for the Junior Educational Robot Kit
-ROBOT=-DROBOT=3 -DUSART0_BAUD=19200
+ROBOT=-DROBOT=3 -DUSART0_BAUD=115200
 
 # Definitions for the Educational Robot Kit Version 1.0
 #ROBOT=-DROBOT=1 -DUSART0_BAUD=19200
@@ -68,6 +68,8 @@ DIR_KRNL= Kernel
 
 INCLUDES= -I. -I./$(DIR_BHVR) -I./$(DIR_DRVS) -I./$(DIR_KRNL)
 
+LIBS += -lm
+
 ## Options common to compile, link and assembly rules
 COMMON  = -mmcu=$(MCU)
 
@@ -110,10 +112,12 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 HEADERS=$(DIR_BHVR)/robot.h 
 
 SOURCES= main.c \
-		$(DIR_BHVR)/robot.c
+		$(DIR_BHVR)/robot.c \
+		$(DIR_BHVR)/segway.c
 
 OBJECTS=$(DIR_OBJS)/main.o \
-		$(DIR_OBJS)/$(DIR_BHVR)/robot.o 
+		$(DIR_OBJS)/$(DIR_BHVR)/robot.o \
+		$(DIR_OBJS)/$(DIR_BHVR)/segway.o 
 
 
 # Deal with some of the dependencies just to make sure

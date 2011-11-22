@@ -11,7 +11,7 @@
 #include "robot.h"
 
 #if defined(USE_MOTOR)
-#	include "motor_driver.h"
+#   include "motor_driver.h"
 #endif /* USE_MOTOR */
 
 #if defined(USE_USART0) || defined(USE_USART1)
@@ -48,103 +48,94 @@
 //----------------------------------------------------------------------------
 // FUNCTIONS / METHODS
 //----------------------------------------------------------------------------
-void 
-robotForward( int16_t power )
+void robotForward(int16_t power)
 {
-	setMotorSpeed( MotorLeft, power * LEFT_MOTOR_GAIN );
-	setMotorSpeed( MotorRight, power * RIGHT_MOTOR_GAIN );
+    setMotorSpeed(MotorLeft, power * LEFT_MOTOR_GAIN);
+    setMotorSpeed(MotorRight, power * RIGHT_MOTOR_GAIN);
 #if defined(USE_MONITOR)
-	/* Make sure these match the C# code in FormMonitor enum CommandDefinitions */
-	transmitStringUSART0("MC\x01\n");
+    /* Make sure these match the C# code in FormMonitor enum CommandDefinitions */
+    transmitStringUSART0("MC\x01\n");
 #endif
 }
 
-void 
-robotBackward( int16_t power )
+void robotBackward(int16_t power)
 {
-	setMotorSpeed( MotorLeft, - power * LEFT_MOTOR_GAIN );
-	setMotorSpeed( MotorRight, - power * RIGHT_MOTOR_GAIN );
+    setMotorSpeed(MotorLeft, - power * LEFT_MOTOR_GAIN);
+    setMotorSpeed(MotorRight, - power * RIGHT_MOTOR_GAIN);
 #if defined(USE_MONITOR)
-	/* Make sure these match the C# code in FormMonitor */
-	transmitStringUSART0("MC\x02\n");
-#endif
-}
-
-
-void 
-robotTurnLeft( int16_t power )
-{
-	setMotorSpeed( MotorLeft, 0 );
-	setMotorSpeed( MotorRight, power * RIGHT_MOTOR_GAIN );
-#if defined(USE_MONITOR)
-	/* Make sure these match the C# code in FormMonitor */
-	transmitStringUSART0("MC\x03\n");
-#endif
-}
-
-void 
-robotTurnRight( int16_t power )
-{
-	setMotorSpeed( MotorLeft, power * LEFT_MOTOR_GAIN );
-	setMotorSpeed( MotorRight, 0);
-#if defined(USE_MONITOR)
-	/* Make sure these match the C# code in FormMonitor */
-	transmitStringUSART0("MC\x04\n");
-#endif
-}
-
-void 
-robotSpinLeft( int16_t power )
-{
-	setMotorSpeed( MotorLeft, -power * LEFT_MOTOR_GAIN );
-	setMotorSpeed( MotorRight, power * RIGHT_MOTOR_GAIN );
-#if defined(USE_MONITOR)
-	/* Make sure these match the C# code in FormMonitor */
-	transmitStringUSART0("MC\x05\n");
-#endif
-}
-
-void 
-robotSpinRight( int16_t power )
-{
-	setMotorSpeed( MotorLeft, power * LEFT_MOTOR_GAIN );
-	setMotorSpeed( MotorRight, -power * RIGHT_MOTOR_GAIN);
-#if defined(USE_MONITOR)
-	/* Make sure these match the C# code in FormMonitor */
-	transmitStringUSART0("MC\x06\n");
+    /* Make sure these match the C# code in FormMonitor */
+    transmitStringUSART0("MC\x02\n");
 #endif
 }
 
 
-void 
-robotBrake( int16_t power )
+void robotTurnLeft(int16_t power)
 {
-	setMotorSpeed( MotorLeft, 0 );
-	setMotorSpeed( MotorRight, 0 );
+    setMotorSpeed(MotorLeft, 0);
+    setMotorSpeed(MotorRight, power * RIGHT_MOTOR_GAIN);
 #if defined(USE_MONITOR)
-	/* Make sure these match the C# code in FormMonitor */
-	transmitStringUSART0("MC\x07\n");
+    /* Make sure these match the C# code in FormMonitor */
+    transmitStringUSART0("MC\x03\n");
+#endif
+}
+
+void robotTurnRight(int16_t power)
+{
+    setMotorSpeed(MotorLeft, power * LEFT_MOTOR_GAIN);
+    setMotorSpeed(MotorRight, 0);
+#if defined(USE_MONITOR)
+    /* Make sure these match the C# code in FormMonitor */
+    transmitStringUSART0("MC\x04\n");
+#endif
+}
+
+void robotSpinLeft(int16_t power)
+{
+    setMotorSpeed(MotorLeft, -power * LEFT_MOTOR_GAIN);
+    setMotorSpeed(MotorRight, power * RIGHT_MOTOR_GAIN);
+#if defined(USE_MONITOR)
+    /* Make sure these match the C# code in FormMonitor */
+    transmitStringUSART0("MC\x05\n");
+#endif
+}
+
+void robotSpinRight(int16_t power)
+{
+    setMotorSpeed(MotorLeft, power * LEFT_MOTOR_GAIN);
+    setMotorSpeed(MotorRight, -power * RIGHT_MOTOR_GAIN);
+#if defined(USE_MONITOR)
+    /* Make sure these match the C# code in FormMonitor */
+    transmitStringUSART0("MC\x06\n");
 #endif
 }
 
 
-void
-robotStop( void )
+void robotBrake(int16_t power)
 {
-	setMotorSpeed( MotorLeft, 0 );
-	setMotorSpeed( MotorRight, 0 );
+    setMotorSpeed(MotorLeft, 0);
+    setMotorSpeed(MotorRight, 0);
 #if defined(USE_MONITOR)
-	/* Make sure these match the C# code in FormMonitor */
-	transmitStringUSART0("MC\x08\n");
+    /* Make sure these match the C# code in FormMonitor */
+    transmitStringUSART0("MC\x07\n");
 #endif
 }
 
-void
-initRobot()
+
+void robotStop(void)
 {
-	initADC( );
-	addADC( LIGHT_SENSORS_MASK, 0 );
-	addADC( ACCEL_MASK, 0 );
-	startADC();
+    setMotorSpeed(MotorLeft, 0);
+    setMotorSpeed(MotorRight, 0);
+#if defined(USE_MONITOR)
+    /* Make sure these match the C# code in FormMonitor */
+    transmitStringUSART0("MC\x08\n");
+#endif
+}
+
+void initRobot()
+{
+    initADC();
+    addADC(LIGHT_SENSORS_MASK, 0);
+    addADC(ACCEL_MASK, 0);
+    startADC();
 }
 

@@ -3,7 +3,7 @@
  *
  * Created: 10/27/2011 1:51:36 PM
  *  Author: jacky
- */ 
+ */
 
 
 #ifndef BUTTONS_H_
@@ -13,15 +13,15 @@
 
 #if ROBOT == 3
 
-#   define START_BUTTON_DDR			DDRD
-#   define START_BUTTON_PORT		PORTD
+#   define START_BUTTON_DDR         DDRD
+#   define START_BUTTON_PORT        PORTD
 #   define START_BUTTON_PIN         PIND
-#   define START_BUTTON_BIT			0
+#   define START_BUTTON_BIT         0
 
-#   define B1_BUTTON_DDR			DDRD
-#   define B1_BUTTON_PORT			PORTD
-#   define B1_BUTTON_PIN			PIND
-#   define B1_BUTTON_BIT			1
+#   define B1_BUTTON_DDR            DDRD
+#   define B1_BUTTON_PORT           PORTD
+#   define B1_BUTTON_PIN            PIND
+#   define B1_BUTTON_BIT            1
 
 #else
 #   error "Undefined robot definition in buttons.h"
@@ -29,8 +29,8 @@
 
 enum Buttons
 {
-	START_BUTTON = 1,
-	BUTTON1 = 2
+    START_BUTTON = 1,
+    BUTTON1 = 2
 };
 
 void initButtons();

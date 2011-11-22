@@ -9,8 +9,7 @@
 
 #if defined(USE_LED)
 
-void
-initLEDs()
+void initLEDs()
 {
 	
 }

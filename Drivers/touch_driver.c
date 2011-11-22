@@ -1,5 +1,5 @@
 /**
- * Driver for the Touch sensors on the KAIST KRC kit. 
+ * Driver for the Touch sensors on the KAIST KRC kit.
  *
  * Jacky Baltes <jacky@cs.umanitoba.ca> Tue Feb  6 02:25:32 CST 2007
  *
@@ -12,35 +12,33 @@
 #include "touch_driver.h"
 
 
-void 
-initTouchSubSystem( void ) 
+void initTouchSubSystem(void)
 {
-  DDRF = DDRF & 0x00;         /* Set Bit 7,6 (buttons) and 5,4 (touch) as inputs */
-  PORTF = PORTF & 0x00;       /* Turn off pull ups */  
+    DDRF = DDRF & 0x00;         /* Set Bit 7,6 (buttons) and 5,4 (touch) as inputs */
+    PORTF = PORTF & 0x00;       /* Turn off pull ups */
 }
 
-enum ButtonState 
-getTouchSensor( enum TouchSensor touch )
+enum ButtonState getTouchSensor(enum TouchSensor touch)
 {
-  uint8_t result = Down;
+    uint8_t result = Down;
 
-  if( ( touch == RunStop ) && ( TOUCH_PORT_IN & 0x40 ) ) 
+    if ((touch == RunStop) && (TOUCH_PORT_IN & 0x40))
     {
-      result = Up;
+        result = Up;
     }
-  else if ( ( touch == Select ) && ( TOUCH_PORT_IN & 0x80 ) )
+    else if ((touch == Select) && (TOUCH_PORT_IN & 0x80))
     {
-      result = Up;
+        result = Up;
     }
-  else if ( ( touch == Touch1 ) && ( TOUCH_PORT_IN & 0x10 ) )
+    else if ((touch == Touch1) && (TOUCH_PORT_IN & 0x10))
     {
-      result = Up;
+        result = Up;
     }
-  else if ( ( touch == Touch2 ) && ( TOUCH_PORT_IN & 0x20 ) )
+    else if ((touch == Touch2) && (TOUCH_PORT_IN & 0x20))
     {
-      result = Up;
+        result = Up;
     }
-  return result;
+
+    return result;
 }
-
 
