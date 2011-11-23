@@ -3,19 +3,19 @@
 #include <math.h>
 #include "segway.h"
 
-#define CALI_COUNT 10
-
 #if defined(HIGH_RESOLUTION)
-#define ADC_RES 1024
+#define ADC_RES 1023
 #else
 #define ADC_RES 255
 #endif
 
 #define Vref  5000
 #define zeroG 2500.0f
-#define sens   500
+#define sens  500
 
 #define speed_ratio 1.25f
+
+void update_components();
 
 struct prev_data
 {
@@ -29,68 +29,53 @@ struct curr_data
     accel_data  accel;
 };
 
-struct motor_speed
+
+struct motor_speed speed;
+static struct prev_data pdata;
+static struct curr_data cdata;
+static float ch_angle;
+static float set_point;
+
+void update(accel_x, accel_y, accel_z)
+uint16_t accel_x, accel_y, accel_z;
 {
-    uint16_t left;
-    uint16_t right;
-};
+    pdata.angles = cdata.angles;
+    pdata.accel  = cdata.accel;
 
-struct segway
-{
-    struct motor_speed;
-    struct prev_data pdata;
-    struct curr_data cdata;
-    float ch_angle;
-    float set_point;
-};
+    cdata.accel.x = (((accel_x * Vref) / ADC_RES) - zeroG) / sens;
+    cdata.accel.y = (((accel_y * Vref) / ADC_RES) - zeroG) / sens;
+    cdata.accel.z = (((accel_z * Vref) / ADC_RES) - zeroG) / sens;
+    update_components();
 
-static struct segway segway; 
-
-void update(uint16_t accel_x, uint16_t accel_y, uint16_t accel_z)
-{
-    segway.pdata.angles = segway.cdata.angles;
-    segway.pdata.accel  = segway.cdata.accel;
-
-    segway.cdata.accel.accel_x = accel_x;
-    segway.cdata.accel.accel_y = accel_y;
-    segway.cdata.accel.accel_z = accel_z;
-
-    update_components(accel_x, accel_y, accel_z);
-
-    segway.ch_angle = segway.cdata.angles.pitch - segway.pdata.angles.pitch;
+    ch_angle = cdata.angles.pitch - pdata.angles.pitch;
 }
 
-void update_components(uint16_t accel_x, uint16_t accel_y, uint16_t accel_z)
+void update_components()
 {
-    float x = (((accel_x * Vref) / ADC_RES) - zeroG) / sens;
-    float y = (((accel_y * Vref) / ADC_RES) - zeroG) / sens;
-    float z = (((accel_z * Vref) / ADC_RES) - zeroG) / sens;
+    float x = cdata.accel.x;
+    float y = cdata.accel.y;
+    float z = cdata.accel.z;
 
-    segway.cdata.angles->pitch = atan2(x, sqrt(y*y + z*z)) * 10; 
-    segway.cdata.angles->roll  = atan2(y, sqrt(2*z*z)) * 10;  
+    cdata.angles.pitch = atan2(x, sqrt(y*y + z*z)) * 10; 
+    cdata.angles.roll  = atan2(y, sqrt(2*z*z)) * 10;  
 }
 
-struct accel *get_components(uint16_t accel_x, uint16_t accel_y, uint16_t accel_z)
+
+void set_angle(float f)
 {
-    struct accel *ac = malloc(sizeof(struct accel));
-
-    ac->accel_x = (((accel_x * Vref) / ADC_RES) - zeroG) / sens;
-    ac->accel_y = (((accel_y * Vref) / ADC_RES) - zeroG) / sens;
-    ac->accel_z = (((accel_z * Vref) / ADC_RES) - zeroG) / sens;
-
-    return ac;
+	set_point = f;
 }
 
-struct orient *get_orient(uint16_t accel_x, uint16_t accel_y, uint16_t accel_z)
+/* ACCESSORS */
+void get_components(struct accel *ac)
 {
-    struct orient *or = malloc(sizeof(struct orient));
+    ac->x = cdata.accel.x;
+    ac->y = cdata.accel.y;
+    ac->z = cdata.accel.z;
+}
 
-    float x = (((accel_x * Vref) / ADC_RES) - zeroG) / sens;
-    float y = (((accel_y * Vref) / ADC_RES) - zeroG) / sens;
-    float z = (((accel_z * Vref) / ADC_RES) - zeroG) / sens;
-
-    or->pitch = atan2(x, sqrt(y*y + z*z)) * 10; 
-    or->roll  = atan2(y, sqrt(z*z + z*z)) * 10;  
-
-    return or;
+void get_orient(struct orient *or)
+{
+    or->pitch = cdata.angles.pitch; 
+    or->roll  = cdata.angles.roll;
 }

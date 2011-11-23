@@ -3,26 +3,29 @@
 
 typedef struct orient
 {
-    double pitch;
-    double roll;
+    float pitch;
+    float roll;
 } orient_data;
 
-//TODO: accel_x -> x etc
 typedef struct accel
 {
-	double accel_x;
-	double accel_y;
-	double accel_z;
+	float x;
+	float y;
+	float z;
 } accel_data;
 
+struct motor_speed
+{
+    uint16_t left;
+    uint16_t right;
+};
+
 void update(uint16_t, uint16_t, uint16_t);
+void update_components();
 
-uint16_t get_angle(uint16_t, uint16_t, uint16_t);
-void update_components(uint16_t, uint16_t, uint16_t);
+void set_angle(float f);
 
-uint8_t add_cali_data(uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t);
-struct orient *get_orient(uint16_t, uint16_t, uint16_t);
-struct accel *get_components(uint16_t, uint16_t, uint16_t);
-
-void send_cali_data();
+//for debugging
+void get_orient(struct orient *) __attribute__ ((unused));
+void get_components(struct accel *) __attribute__ ((unused));
 #endif

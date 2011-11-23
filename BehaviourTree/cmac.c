@@ -14,13 +14,32 @@
  *
  * =====================================================================================
  */
+#define ALPHA           0.1f 
+#define DIMENSIONS 		2
+#define TILES 			4
+#define CELLS_PER_TILE 	10
+
+#define X_MIN 150.0f
+#define X_MAX 250.0f
+
+//needs to be tuned
+#define Y_MIN -30.0f
+#define Y_MAX  30.0f
 
 typedef struct CMAC
 {
 
 } cmac;
 
-cmac *allocate_cmac(uint8_t num_tiles, uint8_t tiles_row, uint8_t min, uint16_t max
-					float learn_rate, )
+static cmac CMAC;
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  alloc_cmac
+ *  Description:  Allocates a new CMAC
+ * =====================================================================================
+ */
+void alloc_cmac()
 {
+
 }

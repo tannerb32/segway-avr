@@ -215,7 +215,7 @@ endif
 #---------------------------------------------------------------------
 all: clean default
 
-default: $(TARGET) $(PROJECT).bin $(PROJECT).hex $(PROJECT).eep $(PROJECT).lss print_size
+default: $(TARGET) $(PROJECT).bin $(PROJECT).hex $(PROJECT).eep $(PROJECT).lss print_size tagdir
 
 $(TARGET): make_directory $(OBJECTS)
 	$(TOOL_PATH)$(LDCC) $(LDFLAGS) $(OBJECTS) $(LIBDIRS) $(LIBS) -o $(TARGET)
@@ -234,6 +234,9 @@ $(TARGET): make_directory $(OBJECTS)
 
 make_directory:
 	$(TOOL_PATH)mkdir -p $(DIR_DEPS)/ $(DIR_OBJS)/ $(DIR_OBJS)/$(DIR_BHVR)/ $(DIR_OBJS)/$(DIR_DRVS)/ $(DIR_OBJS)/$(DIR_KRNL)/
+
+tagdir:
+	tagdir.sh
 
 print_size: ${TARGET}
 	@$(TOOL_PATH)echo
