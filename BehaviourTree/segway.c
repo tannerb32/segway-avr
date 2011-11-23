@@ -56,14 +56,14 @@ void update_components()
     float y = cdata.accel.y;
     float z = cdata.accel.z;
 
-    cdata.angles.pitch = atan2(x, sqrt(y*y + z*z)) * 10; 
-    cdata.angles.roll  = atan2(y, sqrt(2*z*z)) * 10;  
+    cdata.angles.pitch = atan2(x, sqrt(y * y + z * z)) * 10;
+    cdata.angles.roll  = atan2(y, sqrt(2 * z * z)) * 10;
 }
 
 
 void set_angle(float f)
 {
-	set_point = f;
+    set_point = f;
 }
 
 /* ACCESSORS */
@@ -76,6 +76,6 @@ void get_components(struct accel *ac)
 
 void get_orient(struct orient *or)
 {
-    or->pitch = cdata.angles.pitch; 
+    or->pitch = cdata.angles.pitch;
     or->roll  = cdata.angles.roll;
 }

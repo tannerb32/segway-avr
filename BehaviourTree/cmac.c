@@ -14,16 +14,16 @@
  *
  * =====================================================================================
  */
-#define ALPHA           0.1f 
-#define DIMENSIONS 		2
-#define TILES 			4
-#define CELLS_PER_TILE 	10
+#define ALPHA           0.1f                    /* Learning rate */
+#define DIMENSIONS      2
+#define TILES           4
+#define CELLS_PER_TILE  10
 
-#define X_MIN 150.0f
+#define X_MIN 150.0f                            /* Angle */
 #define X_MAX 250.0f
 
 //needs to be tuned
-#define Y_MIN -30.0f
+#define Y_MIN -30.0f                            /* Angle hat */
 #define Y_MAX  30.0f
 
 typedef struct CMAC
@@ -33,7 +33,7 @@ typedef struct CMAC
 
 static cmac CMAC;
 
-/* 
+/*
  * ===  FUNCTION  ======================================================================
  *         Name:  alloc_cmac
  *  Description:  Allocates a new CMAC
