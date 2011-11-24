@@ -20,6 +20,6 @@
 
 typedef struct CMAC cmac;
 
-cmac *alloc_cmac(u);
+void alloc_cmac() __attribute__ ((constructor));
 
 #endif // _CMAC_H_

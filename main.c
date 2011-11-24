@@ -55,6 +55,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "segway.h"
+#include "pid.h"
 
 #define RAD2DEG 57.2957796
 
@@ -71,17 +72,17 @@ int main(void)
 {
     init_robot();
 
-    printStringLCD(0, 5, "Options");
-    _delay_ms(1200);
-    clearLCD();
+    //printStringLCD(0, 5, "Options");
+    //_delay_ms(1200);
+    //clearLCD();
     printStringLCD(0, 0, "Run");
     printStringLCD(1, 0, "v");
-    _delay_ms(1200);
-    clearLCD();
-    printStringLCD(0, 0, "Calibrate");
-    printStringLCD(1, 2, "v");
-    _delay_ms(1200);
-    clearLCD();
+    //_delay_ms(1200);
+    //clearLCD();
+    //printStringLCD(0, 0, "Calibrate");
+    //printStringLCD(1, 2, "v");
+    //_delay_ms(1200);
+    //clearLCD();
 
     uint32_t current_time = 0;
     //uint16_t angle;
@@ -92,10 +93,13 @@ int main(void)
 
     while(!Clicked(ButtonStart));
 
-    float alpha = 0.1f;
+    float alpha = 0.5f;
     uint32_t prev_accel_x = 0;
     uint32_t prev_accel_y = 0;
     uint32_t prev_accel_z = 0;
+
+    struct accel ac;
+    struct orient t;
 
     for (;;)
     {
@@ -122,38 +126,36 @@ int main(void)
         prev_accel_y = accel_y;
         prev_accel_z = accel_z;
 
-        struct accel *ac = get_components(accel_x, accel_y, accel_z);
-        struct orient *t = get_orient(accel_x, accel_y, accel_z);
+        update(accel_x, accel_y, accel_z);
+
+        get_components(&ac);
+        get_orient(&t); 
 
         //sprintf(msg, "L%u M%u R%u", light_l, light_m, light_r);
 
-        printIntegerLCD(0, 0,  prev_accel_x, 10);
-        printIntegerLCD(0, 5,  prev_accel_y, 10);
-        printIntegerLCD(0, 10, prev_accel_z, 10);
+        //printIntegerLCD(0, 0,  prev_accel_x, 10);
+        //printIntegerLCD(0, 5,  prev_accel_y, 10);
+        //printIntegerLCD(0, 10, prev_accel_z, 10);
 
         //printStringLCD(0,0,msg);
 
-        int32_t d1 = t->roll * RAD2DEG;
-        int32_t d2 = ((t->roll * RAD2DEG) - d1) * 1000;
+        int32_t d1 = t.roll * RAD2DEG;
+        int32_t d2 = ((t.roll * RAD2DEG) - d1) * 1000;
 
         sprintf(msg, "%ld.%03ld,", d1, d2); 
         transmitStringUSART0(msg);
         sprintf(msg, "\t%u,\t%u,\t%u\n", light_l, light_m, light_r); 
         transmitStringUSART0(msg);
 
-        free(t);
-        free(ac);
-
         float ratio = 1.25f;
-        int speed = 200;
+        int32_t speed = get_pid((float)(t.roll * RAD2DEG));
 
+        printIntegerLCD(0, 0, speed, 10);
+        printIntegerLCD(1, 0, d1, 10);
         setMotorSpeed(MotorLeft, speed);
         setMotorSpeed(MotorRight, speed * ratio);
 
-        _delay_ms(1000/20);
-        current_time += (1000/20);
-
-        //_delay_ms(100);
+        _delay_ms(20);
         //setMotorSpeed(MotorLeft, -200);
         //setMotorSpeed(MotorRight, +200);
         //_delay_ms(100);

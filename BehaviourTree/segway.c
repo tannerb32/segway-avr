@@ -9,7 +9,7 @@
 #define ADC_RES 255
 #endif
 
-#define Vref  5000
+#define Vref  5000.0f
 #define zeroG 2500.0f
 #define sens  500
 
@@ -17,13 +17,7 @@
 
 void update_components();
 
-struct prev_data
-{
-    orient_data angles;
-    accel_data accel;
-};
-
-struct curr_data
+struct data
 {
     orient_data angles;
     accel_data  accel;
@@ -31,8 +25,8 @@ struct curr_data
 
 
 struct motor_speed speed;
-static struct prev_data pdata;
-static struct curr_data cdata;
+static struct data pdata;
+static struct data cdata;
 static float ch_angle;
 static float set_point;
 
@@ -41,13 +35,11 @@ uint16_t accel_x, accel_y, accel_z;
 {
     pdata.angles = cdata.angles;
     pdata.accel  = cdata.accel;
-
     cdata.accel.x = (((accel_x * Vref) / ADC_RES) - zeroG) / sens;
     cdata.accel.y = (((accel_y * Vref) / ADC_RES) - zeroG) / sens;
     cdata.accel.z = (((accel_z * Vref) / ADC_RES) - zeroG) / sens;
     update_components();
-
-    ch_angle = cdata.angles.pitch - pdata.angles.pitch;
+    ch_angle = cdata.angles.roll - pdata.angles.roll;
 }
 
 void update_components()
@@ -55,9 +47,8 @@ void update_components()
     float x = cdata.accel.x;
     float y = cdata.accel.y;
     float z = cdata.accel.z;
-
     cdata.angles.pitch = atan2(x, sqrt(y * y + z * z)) * 10;
-    cdata.angles.roll  = atan2(y, sqrt(2 * z * z)) * 10;
+    cdata.angles.roll  = atan2(y, sqrt(z * z + z * z)) * 10;
 }
 
 

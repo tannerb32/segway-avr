@@ -8,8 +8,8 @@ typedef struct orient
 } orient_data;
 
 typedef struct accel
-{
-	float x;
+{   
+    float x;
 	float y;
 	float z;
 } accel_data;
@@ -21,7 +21,6 @@ struct motor_speed
 };
 
 void update(uint16_t, uint16_t, uint16_t);
-void update_components();
 
 void set_angle(float f);
 

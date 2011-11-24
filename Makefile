@@ -109,15 +109,19 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 #---------------------------------------------------------------------
 # FILES
 #---------------------------------------------------------------------
-HEADERS=$(DIR_BHVR)/robot.h 
+HEADERS=$(DIR_BHVR)/robot.h \
+		$(DIR_BHVR)/segway.h \
+		$(DIR_BHVR)/pid.h \
 
 SOURCES= main.c \
 		$(DIR_BHVR)/robot.c \
-		$(DIR_BHVR)/segway.c
+		$(DIR_BHVR)/segway.c \
+		$(DIR_BHVR)/pid.c
 
 OBJECTS=$(DIR_OBJS)/main.o \
 		$(DIR_OBJS)/$(DIR_BHVR)/robot.o \
-		$(DIR_OBJS)/$(DIR_BHVR)/segway.o 
+		$(DIR_OBJS)/$(DIR_BHVR)/segway.o \
+		$(DIR_OBJS)/$(DIR_BHVR)/pid.o 
 
 
 # Deal with some of the dependencies just to make sure
