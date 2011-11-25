@@ -1,5 +1,6 @@
 tags
 sensor_output
+references
 *.a
 *.o
 .dep
